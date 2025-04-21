@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import * as AuthService from '../services/authService';
-import { registerSchema, loginSchema } from '../validations/userValidation';
+import * as AuthService from '../services/auth.service';
+import { registerSchema, loginSchema } from '../validations/user.validation';
 
 export const register = async(req: Request, res: Response): Promise<void> =>{
     try {
@@ -24,7 +24,7 @@ export const login = async(req: Request, res: Response) =>{
             return;
         }
          const token = await AuthService.loginUser(parsed.data);
-         //res.status(200).json({ message: 'User logged in successfully' });
+            //res.status(200).json({ message: 'User logged in successfully' });
          res.json({ token });
          } catch (error: any) {
             res.status(401).json({ message: error.message });

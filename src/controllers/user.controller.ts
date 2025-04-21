@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { getUserProfile, updateUserProfile, deleteUserProfile, getAllUsers, deleteAnyUser } from '../services/userService';
-import {AuthRequest} from '../middleware/authMiddleware';
-import { updateUserSchema } from '../validations/userValidation';
+import { getUserProfile, updateUserProfile, deleteUserProfile, getAllUsers, deleteAnyUser } from '../services/user.service';
+import {AuthRequest} from '../middleware/auth.middleware';
+import { updateUserSchema } from '../validations/user.validation';
 
 
 export const getProfile = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -44,7 +44,7 @@ export const deleteProfile = async (req: AuthRequest, res: Response) => {
   
 };
 
-// Admin-only actions
+// instructor-only actions
 export const getAllProfiles = async (_req: Request, res: Response) => {
   const users = await getAllUsers();
   res.json(users);

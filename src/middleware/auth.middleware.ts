@@ -18,7 +18,7 @@ export const protect = (req: AuthRequest, res: Response, next: NextFunction): vo
         // token = "eyJhbGciOi...
         // console.log('Token:', token); // Debug line
         const decoded = verifyToken(token) as JwtPayload;
-        req.user = { id: decoded.userId }; // Extend as needed        
+        req.user = { id: decoded.userId, role: decoded.role }; // Extend as needed        
         return next();
     } catch (error) {
         res.status(401).json({massage: "Not authorized, token failed"});

@@ -1,5 +1,5 @@
 import {User} from '../models/User';
-import { AuthCredentials, RegisterInput } from '../types/user';
+import { AuthCredentials, RegisterInput } from '../types/auth.types';
 import {hashPassword, comparePassword} from '../utils/hash';
 import {generateToken} from '../utils/jwt';
 

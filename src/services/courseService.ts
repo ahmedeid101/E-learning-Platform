@@ -1,8 +1,8 @@
-import { Course} from "../models/courseModel";
-import { ICourse } from '../types/course';
+import { Course} from "../models/Course";
+import { ICourse } from '../types/course.types';
 
 
-export const createCourse = async(data: any) =>{
+export const createCourse = async(data: Partial<ICourse>): Promise<ICourse> =>{
     return await Course.create(data);
 };
 

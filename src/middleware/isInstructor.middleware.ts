@@ -1,5 +1,5 @@
 import { Response, NextFunction } from "express";
-import { AuthRequest } from "./authMiddleware";
+import { AuthRequest } from "./auth.middleware";
 
 export const isInstructor = (req: AuthRequest, res: Response, next: NextFunction) =>{
     if(req.user?.role !== 'instructor'){
