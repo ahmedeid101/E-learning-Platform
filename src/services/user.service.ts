@@ -1,5 +1,5 @@
 import { User } from '../models/User';
-import { IUser } from '../types/user.types';
+import { IUser } from '../types/user.type';
 
 export const getUserProfile = async(userId: string): Promise<IUser | null> =>{
     const user = await User.findById(userId).select('-password');

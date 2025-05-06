@@ -8,14 +8,11 @@ export const createCourse = async(req: AuthRequest, res: Response): Promise<void
     const validated = zodValidate(createCourseSchema, req.body, res);
         if(!validated) return;
     try {
-        // const parsed = createCourseSchema.safeParse(req.body);
-        // if (!parsed.success) {
-        //     res.status(400).json({ errors: parsed.error.flatten().fieldErrors });
-        // }
-        const course = await courseService.createCourse({...validated, instructor: req.user.id});
+        const course = await courseService.createCourse({ ...validated, instructor: req.user!.id });
+        //console.log('User creating course:', req.user?.id);
         res.status(201).json(course)
-    } catch (error) {
-        res.status(500).json({ message: 'Failed to create course' });
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
     } 
 };
 
@@ -34,19 +31,15 @@ export const getOne = async(req: Request, res: Response): Promise<void> =>{
 };
 
 export const update = async (req: AuthRequest, res: Response) => {
+    const validated = zodValidate(updateCourseSchema, req.body, res);
+        if(!validated) return;
     try {
         const idCheck = paramIdSchema.safeParse(req.params);
         if (!idCheck.success) {
             res.status(400).json({ errors: idCheck.error.flatten().fieldErrors });
         }
-
-        const parsed = updateCourseSchema.safeParse(req.body);
-        if (!parsed.success) {
-            res.status(400).json({ errors: parsed.error.flatten().fieldErrors });
-            return;
-        }
-
-        const course = await courseService.updateCourse(req.params.id, req.user.id, parsed.data);
+       
+        const course = await courseService.updateCourse(req.params.id, req.user.id, validated);
         if (!course) {
             res.status(404).json({ message: 'Course not found or unauthorized' });
         }

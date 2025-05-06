@@ -5,7 +5,7 @@ import { authorizeRoles } from '../middleware/role.middleware';
 
 const router= express.Router();
 
-router.get('/profile', protect, getProfile);
+router.get('/profile/:id', protect, getProfile);
 router.put('/profile', protect, updateProfile);
 router.delete('/profile', protect, deleteProfile);
 

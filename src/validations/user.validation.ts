@@ -1,9 +1,3 @@
-/*
-  Zod is a TypeScript-first schema declaration and validation library
-  We use it to validate request parameters before hitting the business logic
-  To prevent invalid input (e.g., malformed ids) from causing unexpected behavior or errors.
-*/
-
 import z from 'zod';
 
 // Schema for creating a user

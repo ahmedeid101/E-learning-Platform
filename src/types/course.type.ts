@@ -6,4 +6,4 @@ export interface ICourse extends Document{
   catigory: String;
   price: number;
   instructor: Types.ObjectId;
-}
+};

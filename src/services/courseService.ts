@@ -1,17 +1,23 @@
 import { Course} from "../models/Course";
-import { ICourse } from '../types/course.types';
+import { ICourse } from '../types/course.type';
 
 
 export const createCourse = async(data: Partial<ICourse>): Promise<ICourse> =>{
-    return await Course.create(data);
+    const existing = await Course.findOne({title: data.title, instructor: data.instructor});
+        if(existing) throw new Error('Course with the same title already exists for this instructor.');
+    const course = await Course.create(data);
+    return course;
 };
 
-export const getAllCourses = async() =>{
+export const getAllCourses = async(): Promise<ICourse[]> =>{
     return await Course.find().populate('instructor', 'name email');
 };
 
-export const getCourseById = async(id: string) =>{
-    return await Course.findById(id).populate('instructor', 'name email')
+export const getCourseById = async(courseId: string) =>{
+    const course =  await Course.findById(courseId).populate('instructor', 'name email');
+    console.log(course?.instructor);
+    return course;
+
 };
 
 export const updateCourse = async (courseId: string, userId: string, data: Partial<ICourse>) => {

@@ -4,10 +4,10 @@ dotenv.config();
 import connectDB from './config/db';
 import experss from 'express';
 import cors from 'cors';
-import authRoutes from './routes/auth.routes';
-import userRoutes from './routes/user.routes';
-import courseRoutes from './routes/course.routes';
-import lessonRoutes from './routes/lesson.routes';
+import authRoutes from './routes/auth.route';
+import userRoutes from './routes/user.route';
+import courseRoutes from './routes/course.route';
+import lessonRoutes from './routes/lesson.route';
 
 
 

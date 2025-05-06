@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { getUserProfile, updateUserProfile, deleteUserProfile, getAllUsers, deleteAnyUser } from '../services/user.service';
 import {AuthRequest} from '../middleware/auth.middleware';
 import { updateUserSchema } from '../validations/user.validation';
+import { zodValidate } from "../utils/zod";
 
 
 export const getProfile = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -15,20 +16,17 @@ export const getProfile = async (req: AuthRequest, res: Response): Promise<void>
     } catch (error) {
       res.status(500).json({ message: 'Server error' });
     }
-  };
+};
   
-
 export const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => {
-    try {
-    const parsed = updateUserSchema.safeParse(req.body);
-    if (!parsed.success) {
-      res.status(400).json({ errors: parsed.error.flatten().fieldErrors });
-    }
-      const updatedUser = await updateUserProfile(req.user.id, parsed.data);
-      res.json(updatedUser);
-    } catch (error) {
-      res.status(500).json({ message: 'Failed to update profile' });
-    }
+  const validated = zodValidate(updateUserSchema, req.body, res);
+    if(!validated) return;
+  try {
+    const updatedUser = await updateUserProfile(req.user.id, validated);
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update profile' });
+  }
 };
 
 export const deleteProfile = async (req: AuthRequest, res: Response) => {
