@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { getUserProfile, updateUserProfile, deleteUserProfile, getAllUsers, deleteAnyUser } from '../services/user.service';
-import {AuthRequest} from '../middleware/auth.middleware';
+import { getUserProfile, updateUserProfile, deleteUserProfile, getAllUsers, deleteAnyUser } from '../services/user.services';
+import {AuthRequest} from '../middlewares/auth.middleware';
 import { updateUserSchema } from '../validations/user.validation';
 import { zodValidate } from "../utils/zod";
 

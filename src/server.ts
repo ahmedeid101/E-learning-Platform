@@ -4,12 +4,11 @@ dotenv.config();
 import connectDB from './config/db';
 import experss from 'express';
 import cors from 'cors';
-import authRoutes from './routes/auth.route';
-import userRoutes from './routes/user.route';
-import courseRoutes from './routes/course.route';
-import lessonRoutes from './routes/lesson.route';
-
-
+import authRoutes from './routes/auth.routes';
+import userRoutes from './routes/user.routes';
+import courseRoutes from './routes/course.routes';
+import lessonRoutes from './routes/lesson.routes';
+import enrollmentRoutes from './routes/enrollment.routes';
 
 const app = experss();
 
@@ -19,7 +18,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/lessons', lessonRoutes);
-
+app.use('/api/enrollments', enrollmentRoutes);
 
 app.get('/', (_req, res) =>{
     res.send('E-Learning API Is Running');

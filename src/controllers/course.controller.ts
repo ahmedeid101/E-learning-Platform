@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import * as courseService  from '../services/courseService';
-import { AuthRequest } from '../middleware/auth.middleware';
+import * as courseService  from '../services/courseServices';
+import { AuthRequest } from '../middlewares/auth.middleware';
 import { createCourseSchema, updateCourseSchema, paramIdSchema } from "../validations/course.validation"
 import { zodValidate } from "../utils/zod";
 

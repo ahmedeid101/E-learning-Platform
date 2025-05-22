@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { createLessonSchema, updateLessonSchema } from '../validations/lesson.validation';
-import {AuthRequest} from '../middleware/auth.middleware';
-import * as LessonService  from '../services/lesson.service';
+import {AuthRequest} from '../middlewares/auth.middleware';
+import * as LessonService  from '../services/lesson.services';
 import { zodValidate } from '../utils/zod';
 import { Types } from 'mongoose';
 import { ILesson } from '../types/lesson.type';

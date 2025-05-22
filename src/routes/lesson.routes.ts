@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as LessonController from '../controllers/lesson.controller';
-import { protect } from '../middleware/auth.middleware';
-import { authorizeRoles } from '../middleware/role.middleware';
+import { protect } from '../middlewares/auth.middleware';
+import { authorizeRoles } from '../middlewares/role.middleware';
 
 const router = Router();
 

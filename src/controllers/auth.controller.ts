@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as AuthService from '../services/auth.service';
+import * as AuthService from '../services/auth.services';
 import { registerSchema, loginSchema } from '../validations/user.validation';
 import { zodValidate } from "../utils/zod";
 
@@ -21,7 +21,7 @@ export const login = async(req: Request, res: Response) =>{
          const token = await AuthService.loginUser(validated);
             //res.status(200).json({ message: 'User logged in successfully' });
          res.json({ token });
-         } catch (error: any) {
-            res.status(401).json({ message: error.message });
+    } catch (error: any) {
+         res.status(401).json({ message: error.message });
     }
 }

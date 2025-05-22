@@ -1,7 +1,7 @@
 import express from 'express';
 import * as courseController from '../controllers/course.controller';
-import { protect } from '../middleware/auth.middleware';
-import { isInstructor } from '../middleware/isInstructor.middleware';
+import { protect } from '../middlewares/auth.middleware';
+import { isInstructor } from '../middlewares/isInstructor.middleware';
 
 
 const router = express.Router();
