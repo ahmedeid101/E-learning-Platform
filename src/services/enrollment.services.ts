@@ -1,5 +1,8 @@
 import { Enrollment } from '../models/Enrollment';
 import { Types } from 'mongoose';
+import { isValidObjectId } from '../utils/validateObjectId';
+import { buildEnrollmentFilter } from '../utils/enrollmentQueryBuilder';
+import { applyPagination } from '../utils/pagination';
 
 export const enrollInCourse = async (studentId: string, courseId: string) => {
   const existing = await Enrollment.findOne({ student: studentId, course: courseId });
@@ -11,27 +14,42 @@ export const enrollInCourse = async (studentId: string, courseId: string) => {
   });
 };
 
-
 export const getStudentEnrollments = async (
   studentId: string,
   options: { page?: number; limit?: number; startDate?: string; endDate?: string }) => {
 
   const { page = 1, limit = 10, startDate, endDate } = options;
-  const filter: any = { student: new Types.ObjectId(studentId) };
+  const filter = buildEnrollmentFilter({studentId, startDate,  endDate});
 
-  if (startDate || endDate) {
-    filter.enrolledAt = {};
-    if (startDate) filter.enrolledAt.$gte = new Date(startDate);
-    if (endDate) filter.enrolledAt.$lte = new Date(endDate);
-  }
-
-  const enrollments = await Enrollment.find(filter)
+  const enrollments = await applyPagination(Enrollment.find(filter)
     .select('course status  enrolledAt')
-    .populate('course', 'title description') // fetch course info
-    .skip((page - 1) * limit)
-    .limit(limit);
-
+    .populate('course', 'title description'), // fetch course info
+    page,
+    limit
+  );
   return enrollments;
+};
+
+export const getAllEnrollments = async (filters: {
+  page?: number;
+  limit?: number;
+  startDate?: string;
+  endDate?: string;
+  courseId?: string;
+  studentId?: string;
+}) => {
+
+  const { page = 1, limit = 10, startDate, endDate, studentId, courseId } = filters;
+  const query = buildEnrollmentFilter({studentId, courseId, startDate, endDate});
+
+  const enrollments = await applyPagination(Enrollment.find(query)
+      .populate('student', 'name email') // fetch student info
+      .populate('course', 'title') // fetch course info
+      .sort({ enrolledAt: -1 }),
+      page,
+      limit
+    );
+      return enrollments;
 };
 
 export const getEnrolledStudentsByCourse = async (
@@ -39,26 +57,54 @@ export const getEnrolledStudentsByCourse = async (
     options: { page?: number; limit?: number; startDate?: string; endDate?: string }) => {
         
   const { page = 1, limit = 10, startDate, endDate } = options;
-  const filter: any = { course: new Types.ObjectId(courseId) };
+  const filter = buildEnrollmentFilter({courseId, startDate,  endDate});
 
-  if (startDate || endDate) {
-    filter.enrolledAt = {};
-    if (startDate) filter.enrolledAt.$gte = new Date(startDate);
-    if (endDate) filter.enrolledAt.$lte = new Date(endDate);
-  }
-
-  const enrollments = await Enrollment.find(filter)
+  const enrollments = await applyPagination(Enrollment.find(filter)
     .select('student completed enrolledAt')
-    .populate('student', 'name email') // fetch student info
-    .skip((page - 1) * limit)
-    .limit(limit);
+    .populate('student', 'name email'), // fetch student info
+    page,
+    limit
+    );
     return enrollments;
 };
 
 export const markEnrollmentComplete = async(enrollmetId: string, completed: boolean)=>{
+   const status = completed ? 'completed' : 'active';
+   if (!isValidObjectId(enrollmetId)) throw new Error('Invalid enrollment ID');
     return await Enrollment.findByIdAndUpdate(
         enrollmetId,
-        {completed},
+        {status},
         {new: true}
     );
 };
+
+export const deleteEnrollment = async (id: string) => {
+  if (!isValidObjectId(id)) throw new Error('Invalid enrollment ID');
+  return await Enrollment.findByIdAndDelete(id);
+};
+
+export const getEnrollmentStats = async() =>{
+  const stats = await Enrollment.aggregate([
+    {
+      $group: {
+        _id: '$status',
+        count: {$sum: 1}
+      }
+    },
+
+    {
+      $project: {
+        status: '$_id',
+        count: 1,
+        _id: 0
+      }
+    }
+  ]);
+
+  //Converts the array into an object for easier use in the frontend
+  const formatted: Record<string, number> = {};
+  stats.forEach(stat =>{
+    formatted[stat.status] = stat.count
+  });
+  return formatted;
+}

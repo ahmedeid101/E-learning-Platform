@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getUserProfile, updateUserProfile, deleteUserProfile, getAllUsers, deleteAnyUser } from '../services/user.services';
 import {AuthRequest} from '../middlewares/auth.middleware';
-import { updateUserSchema } from '../validations/user.validation';
+import { updateUserSchema } from '../validations/user.validator';
 import { zodValidate } from "../utils/zod";
 
 

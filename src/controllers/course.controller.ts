@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as courseService  from '../services/courseServices';
 import { AuthRequest } from '../middlewares/auth.middleware';
-import { createCourseSchema, updateCourseSchema, paramIdSchema } from "../validations/course.validation"
+import { createCourseSchema, updateCourseSchema, paramIdSchema } from "../validations/course.validator"
 import { zodValidate } from "../utils/zod";
 
 export const createCourse = async(req: AuthRequest, res: Response): Promise<void> =>{

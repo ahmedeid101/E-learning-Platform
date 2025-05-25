@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as AuthService from '../services/auth.services';
-import { registerSchema, loginSchema } from '../validations/user.validation';
+import { registerSchema, loginSchema } from '../validations/user.validator';
 import { zodValidate } from "../utils/zod";
 
 export const register = async(req: Request, res: Response): Promise<void> =>{

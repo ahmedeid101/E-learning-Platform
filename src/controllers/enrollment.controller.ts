@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as EnrollmentService from '../services/enrollment.services';
-import { updateCompletionSchema, filterEnrollmentSchema,createEnrollmentSchema, courseEnrollmentFilterSchema } 
-        from '../validations/enrollment.validation';
+import { updateCompletionSchema, filterEnrollmentSchema, createEnrollmentSchema, courseEnrollmentFilterSchema } 
+        from '../validations/enrollment.validator';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import { zodValidate } from '../utils/zod';
 
@@ -25,12 +25,25 @@ export const getMyEnrollments = async (req: AuthRequest, res: Response) => {
 
     try {
     const enrollments = await EnrollmentService.getStudentEnrollments(req.user!.id, validated);
-    //console.log('Student ID:', req.user!.id);
       res.json(enrollments);
     } catch {
       res.status(500).json({ message: 'Failed to fetch enrollments' });
     }
 };
+
+// Instructors/Admins: View All enrolled students
+export const getAllEnrollments = async (req: AuthRequest, res: Response) => {
+  const validated = zodValidate(filterEnrollmentSchema, req.query, res);
+  if (!validated) return;
+
+  try {
+    const enrollments = await EnrollmentService.getAllEnrollments(validated);
+    res.json(enrollments);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 // Instructors/Admins: View enrolled students in a course
 export const getEnrolledStudents = async (req: AuthRequest, res: Response) => {
@@ -45,11 +58,12 @@ export const getEnrolledStudents = async (req: AuthRequest, res: Response) => {
 };
 
 export const updateEnrollmentCompletion  = async(req: AuthRequest, res: Response) => {
+  const { id } = req.params;
   const validated = zodValidate(updateCompletionSchema, req.body, res);
-  if(!validated) return;
+  if (!validated) return;
 
   try {
-    const updated = await EnrollmentService.markEnrollmentComplete(validated.enrollmentId, validated.completed);
+    const updated = await EnrollmentService.markEnrollmentComplete(id, validated.completed);
     if(!updated){
       res.status(404).json({ message: 'Enrollment not found' });
     }
@@ -57,4 +71,27 @@ export const updateEnrollmentCompletion  = async(req: AuthRequest, res: Response
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
-}
+};
+
+export const deleteEnrollment = async (req: AuthRequest, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const deleted = await EnrollmentService.deleteEnrollment(id);
+    if (!deleted) {
+      res.status(404).json({ message: 'Enrollment not found' });
+    }
+    res.json({ message: 'Enrollment deleted successfully' });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getStatsController = async (req: Request, res: Response) => {
+  try {
+    const stats = await EnrollmentService.getEnrollmentStats();
+    res.json(stats);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to get stats' });
+  }
+};

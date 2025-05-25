@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createLessonSchema, updateLessonSchema } from '../validations/lesson.validation';
+import { createLessonSchema, updateLessonSchema } from '../validations/lesson.validator';
 import {AuthRequest} from '../middlewares/auth.middleware';
 import * as LessonService  from '../services/lesson.services';
 import { zodValidate } from '../utils/zod';
