@@ -9,6 +9,9 @@ import userRoutes from './routes/user.routes';
 import courseRoutes from './routes/course.routes';
 import lessonRoutes from './routes/lesson.routes';
 import enrollmentRoutes from './routes/enrollment.routes';
+import assessmentRoutes from './routes/assessment.routes';
+import submissionRoutes from './routes/submission.routes';
+
 
 const app = experss();
 
@@ -19,6 +22,9 @@ app.use('/api/users', userRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/lessons', lessonRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
+app.use('/api/assessments', assessmentRoutes);
+app.use('/api/submissions', submissionRoutes);
+
 
 app.get('/', (_req, res) =>{
     res.send('E-Learning API Is Running');

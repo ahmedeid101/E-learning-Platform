@@ -3,8 +3,8 @@ import { date, z } from 'zod';
 export const createAssessmentSchema  = z.object({
     course: z.string().length(24, 'Invalid course ID'),
     title: z.string().min(3),
-    totalMarks: z.string().min(3),
-    passingScore: z.string().min(0),
+    totalMarks: z.number().min(1),
+    passingScore: z.number().min(0),
     dueDate: z.string().refine(val => !isNaN(Date.parse(val)),{
         message: 'Invalid date',
     }),

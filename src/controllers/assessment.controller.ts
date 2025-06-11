@@ -11,6 +11,15 @@ export const createAssessmentController = async (req: AuthRequest, res: Response
   }
 };
 
+export const getAllAssessmentsController = async (req: AuthRequest, res: Response,next: NextFunction) => {
+  try {
+    const assessments = await AssessmentService.getAllAssessments();
+    res.status(200).json(assessments);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getAssessmentByIdController = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
@@ -45,10 +54,9 @@ export const updateAssessmentController  = async (req: AuthRequest, res: Respons
 
 export const deleteAssessmentController  = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const { courseId } = req.params;
-    const deleted = await AssessmentService.deleteAssessment(courseId);
+    const deleted = await AssessmentService.deleteAssessment(req.params.id);
     if (!deleted)  res.status(404).json({ message: 'Assessment not found' });
-    res.json(deleted);
+    res.status(200).json({ message: 'Assessment deleted successfully' });
   } catch (error) {
     next(error);
   }

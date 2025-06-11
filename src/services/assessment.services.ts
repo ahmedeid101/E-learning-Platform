@@ -6,6 +6,10 @@ export const createAssessment = async (data: IAssessment) => {
   return await newAssessment.save();
 };
 
+export const getAllAssessments = async () => {
+  return await Assessment.find().populate('course').lean();
+};
+
 export const getAssessmentById = async (id: string) => {
   return await Assessment.findById(id);
 };
