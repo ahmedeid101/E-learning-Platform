@@ -213,8 +213,6 @@ JWT_SECRET=your_secret_key
 
 * Add notifications / email reminders for due dates
 
-* Add role admin / super admin features
-
 * Add frontend client (React, Vue, etc.) that consumes this API
 
 
