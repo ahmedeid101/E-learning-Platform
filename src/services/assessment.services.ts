@@ -3,6 +3,8 @@ import { IAssessment } from '../types/assessment.type';
 
 export const createAssessment = async (data: IAssessment) => {
   const newAssessment = new Assessment(data);
+  const existing = await Assessment.findOne({title: data.title});
+    if(existing) throw new Error('Assessment already exists');
   return await newAssessment.save();
 };
 

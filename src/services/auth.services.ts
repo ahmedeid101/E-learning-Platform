@@ -1,7 +1,7 @@
 import {User} from '../models/User';
 import { AuthCredentials, RegisterInput } from '../types/auth.type';
-import {hashPassword, comparePassword} from '../utils/hash';
-import {generateToken} from '../utils/jwt';
+import {hashPassword, comparePassword} from '../utils/hash.util';
+import {generateToken} from '../utils/jwt.util';
 
 export const registerUser = async(data: RegisterInput) =>{
     const existing = await User.findOne({email: data.email.toLowerCase()});

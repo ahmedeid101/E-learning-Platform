@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import * as courseService  from '../services/courseServices';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import { createCourseSchema, updateCourseSchema, paramIdSchema } from "../validations/course.validator"
-import { zodValidate } from "../utils/zod";
+import { zodValidate } from "../utils/zod.util";
 
 export const createCourse = async(req: AuthRequest, res: Response): Promise<void> =>{
     const validated = zodValidate(createCourseSchema, req.body, res);

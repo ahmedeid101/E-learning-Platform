@@ -6,10 +6,10 @@ import { authorizeRoles } from '../middlewares/role.middleware';
 
 const router = express.Router();
 
-router.post('/create', protect, authorizeRoles('instructor'), courseController.createCourse);
-router.get('/getAll', protect, courseController.getAll);
-router.get('/getOne/:id', protect, courseController.getOne); 
-router.put('/update/:id', protect, authorizeRoles('instructor'), courseController.update);
-router.delete('/delete/:id', protect, authorizeRoles('admin, instructor'), courseController.remove);
+router.post('/', protect, authorizeRoles('instructor'), courseController.createCourse);
+router.get('/all', protect, courseController.getAll);
+router.get('/:id', protect, courseController.getOne); 
+router.put('/:id', protect, authorizeRoles('instructor'), courseController.update);
+router.delete('/:id', protect, authorizeRoles('admin','instructor'), courseController.remove);
 
 export default router;

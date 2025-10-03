@@ -7,13 +7,13 @@ const router = express.Router();
 
 router.use(protect);
 
-router.post('/create', protect, authorizeRoles('admin, student'), EnrollmentController.enroll);
-router.get('/getById', protect, authorizeRoles('student'), EnrollmentController.getMyEnrollments);
+router.post('/', protect, authorizeRoles('admin', 'student'), EnrollmentController.enroll);
+router.get('/ById', protect, authorizeRoles('student'), EnrollmentController.getMyEnrollments);
 router.get('/all', protect, authorizeRoles('admin', 'instructor'), EnrollmentController.getAllEnrollments);
 router.get('/course/:courseId', protect, authorizeRoles('admin', 'instructor') ,EnrollmentController.getEnrolledStudents);
 router.patch('/complete/:id', protect, authorizeRoles('admin', 'instructor'), EnrollmentController.updateEnrollmentCompletion);
-router.delete('/delete/:id', protect, authorizeRoles('admin'), EnrollmentController.deleteEnrollment);
-router.get('/stats', protect, authorizeRoles('admin'), EnrollmentController.getStatsController);
+router.delete('/:id', protect, authorizeRoles('admin'), EnrollmentController.deleteEnrollment);
+router.get('/states', protect, authorizeRoles('admin'), EnrollmentController.getStatesController);
 
 
 export default router;

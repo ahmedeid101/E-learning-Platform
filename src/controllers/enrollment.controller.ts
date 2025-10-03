@@ -3,7 +3,7 @@ import * as EnrollmentService from '../services/enrollment.services';
 import { updateCompletionSchema, filterEnrollmentSchema, createEnrollmentSchema, courseEnrollmentFilterSchema } 
         from '../validations/enrollment.validator';
 import { AuthRequest } from '../middlewares/auth.middleware';
-import { zodValidate } from '../utils/zod';
+import { zodValidate } from '../utils/zod.util';
 
 // Students: Enroll in a course
 export const enroll = async (req: AuthRequest, res: Response) => {
@@ -87,9 +87,9 @@ export const deleteEnrollment = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getStatsController = async (req: Request, res: Response) => {
+export const getStatesController = async (req: Request, res: Response) => {
   try {
-    const stats = await EnrollmentService.getEnrollmentStats();
+    const stats = await EnrollmentService.getEnrollmentStates();
     res.json(stats);
   } catch (err) {
     res.status(500).json({ message: 'Failed to get stats' });

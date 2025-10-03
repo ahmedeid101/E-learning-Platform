@@ -6,11 +6,11 @@ import { authorizeRoles } from '../middlewares/role.middleware';
 const router= express.Router();
 
 router.get('/profile/:id', protect, getProfile);
-router.put('/profile', protect, updateProfile);
-router.delete('/profile', protect, deleteProfile);
+router.put('/profile/:id', protect, updateProfile);
+router.delete('/profile/:id', protect, deleteProfile);
 
-// instructor-only routes
-router.get('/profile/getAll', protect, authorizeRoles('admin'), getAllProfiles);
+// admin-only routes
+router.get('/profiles', protect, authorizeRoles('admin'), getAllProfiles);
 router.delete('/delete/:id', protect, authorizeRoles('admin'), deleteAnyProfile);
 
 

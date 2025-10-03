@@ -1,8 +1,8 @@
 import { Enrollment } from '../models/Enrollment';
 import { Types } from 'mongoose';
-import { isValidObjectId } from '../utils/validateObjectId';
-import { buildEnrollmentFilter } from '../utils/enrollmentQueryBuilder';
-import { applyPagination } from '../utils/pagination';
+import { isValidObjectId } from '../utils/validateObjectId.util';
+import { buildEnrollmentFilter } from '../utils/enrollmentQueryBuilder.util';
+import { applyPagination } from '../utils/pagination.util';
 
 export const enrollInCourse = async (studentId: string, courseId: string) => {
   const existing = await Enrollment.findOne({ student: studentId, course: courseId });
@@ -12,6 +12,10 @@ export const enrollInCourse = async (studentId: string, courseId: string) => {
     student: new Types.ObjectId(studentId),
     course: new Types.ObjectId(courseId),
   });
+};
+
+export const getEnrollmentById = async(enrollmentId: string) =>{
+    return await Enrollment.findById(enrollmentId);
 };
 
 export const getStudentEnrollments = async (
@@ -83,7 +87,7 @@ export const deleteEnrollment = async (id: string) => {
   return await Enrollment.findByIdAndDelete(id);
 };
 
-export const getEnrollmentStats = async() =>{
+export const getEnrollmentStates = async() =>{
   const stats = await Enrollment.aggregate([
     {
       $group: {

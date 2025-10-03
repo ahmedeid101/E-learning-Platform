@@ -6,7 +6,6 @@ export const createCourseSchema = z.object({
     description: z.string().min(10, 'Description must be at least 10 characters'),
     catigory: z.string().optional(),
     price: z.number().positive('Price must be a positive number'),
-    instructor: z.string().min(1, 'Instructor ID is required'),
 });
 
 // Schema for updating a course

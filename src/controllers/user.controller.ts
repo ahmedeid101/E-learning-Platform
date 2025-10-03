@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import { getUserProfile, updateUserProfile, deleteUserProfile, getAllUsers, deleteAnyUser } from '../services/user.services';
 import {AuthRequest} from '../middlewares/auth.middleware';
 import { updateUserSchema } from '../validations/user.validator';
-import { zodValidate } from "../utils/zod";
+import { zodValidate } from "../utils/zod.util";
 
 
 export const getProfile = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-      const user = await getUserProfile(req.user.id);
+      const user = await getUserProfile(req.params.id);
       if (!user) {
         res.status(404).json({ message: 'User not found' });
         return;
@@ -22,7 +22,7 @@ export const updateProfile = async (req: AuthRequest, res: Response): Promise<vo
   const validated = zodValidate(updateUserSchema, req.body, res);
     if(!validated) return;
   try {
-    const updatedUser = await updateUserProfile(req.user.id, validated);
+    const updatedUser = await updateUserProfile(req.params.id, validated);
     res.json(updatedUser);
   } catch (error) {
     res.status(500).json({ message: 'Failed to update profile' });
@@ -31,7 +31,7 @@ export const updateProfile = async (req: AuthRequest, res: Response): Promise<vo
 
 export const deleteProfile = async (req: AuthRequest, res: Response) => {
   try {
-    const user = await deleteUserProfile(req.user.id);
+    const user = await deleteUserProfile(req.params.id);
     if (!user) {
       res.status(404).json({ message: 'user not found or not authorized' });
     }

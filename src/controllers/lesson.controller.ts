@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { createLessonSchema, updateLessonSchema } from '../validations/lesson.validator';
 import {AuthRequest} from '../middlewares/auth.middleware';
 import * as LessonService  from '../services/lesson.services';
-import { zodValidate } from '../utils/zod';
+import { zodValidate } from '../utils/zod.util';
 import { Types } from 'mongoose';
 import { ILesson } from '../types/lesson.type';
 
@@ -40,13 +40,14 @@ export const getByCourse = async (req: Request, res: Response) => {
     }
 };
 
-export const getById = async (req: Request, res: Response) => {
+export const getById = async (req: AuthRequest, res: Response) => {
     try {
+        console.log("Requested ID:", req.params.id);
         const lesson = await LessonService.getLessonById(req.params.id);
         if (!lesson) {
             res.status(404).json({ message: 'Lesson not found' });
         }
-        res.json(lesson);
+        res.status(200).json(lesson);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching lessons' });
     }
