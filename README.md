@@ -201,21 +201,21 @@ JWT_SECRET=your_secret_key
 
 🧩 Future Enhancements
 
-# Add pagination, filtering, search for courses / assessments
+* Add pagination, filtering, search for courses / assessments
 
-# Add upload support (images, files) for questions / assignments
+* Add upload support (images, files) for questions / assignments
 
-# Add timed assessments and auto-submit at deadline
+* Add timed assessments and auto-submit at deadline
 
-# Add grading by instructor override (manual marks input)
+* Add grading by instructor override (manual marks input)
 
-# Add analytics / dashboards (student performance, class average)
+* Add analytics / dashboards (student performance, class average)
 
-# Add notifications / email reminders for due dates
+* Add notifications / email reminders for due dates
 
-# Add role admin / super admin features
+* Add role admin / super admin features
 
-# Add frontend client (React, Vue, etc.) that consumes this API
+* Add frontend client (React, Vue, etc.) that consumes this API
 
 
 📚 Contributing & License
